@@ -21,7 +21,7 @@ if __name__ == "__main__":
             line = l.decode('utf-8', errors="ignore")
 
             url = re.search('request_to=\"([^\"]*)\"', line)
-            if url: url_list.append(url.group(1))
+            if url: url_list.append(url.group(1).lower())
 
             status = re.search('response_status=\"([^\"]*)\"', line)
             if status: status_list.append(status.group(1))
