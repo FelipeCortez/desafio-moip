@@ -1,14 +1,15 @@
 #!/bin/sh
 
-# cut separa pelas aspas e pega a segunda parte
-# sort uniq -c sort -nr conta linhas repetidas e ordena pelas mais frequentes
-# awk troca as colunas para deixar no formato pedido na especificação
+# cut separa pelas aspas e -f2 pega a segunda parte
+# tr deixa tudo em minúsculas
+# sort uniq -c sort -nr conta linhas repetidas e ordena pelas mais repetidas
+# awk troca as colunas para deixar no formato solicitado na especificação
 order_by_freq() {
-    cut -d '"' -f2 | sort | uniq -c | sort -nr | awk '{print $2 " - " $1}'
+    cut -d '"' -f2 | tr '[A-Z]' '[a-z]' | sort | uniq -c | sort -nr | awk '{print $2 " - " $1}'
 }
 
-# o primeiro GREP seleciona matches para request_to="..."
-# head -n 3 seleciona as três primeiras linhas
+# o primeiro GREP seleciona casamentos para request_to="..."
+# head -n 3 seleciona as três primeiras linhas do resultado
 grep --text -o -E 'request_to=\"[^\"]*\"' $1 | order_by_freq | head -n 3;
 echo;
 grep --text -o -E 'response_status=\"\d+\"' $1 | order_by_freq
