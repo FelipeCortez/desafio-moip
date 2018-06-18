@@ -4,7 +4,13 @@
 - Uma tabela mostrando a quantidade de webhooks por status
 
 ## Modo de usar
+Para stats.sh:
 ```sh
 $ chmod +x stats.sh
 $ ./stats.sh log.txt
+```
+
+Para stats.py (com Python 3.6)
+```sh
+$ python3 stats.py log.txt
 ```
