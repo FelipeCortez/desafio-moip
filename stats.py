@@ -13,14 +13,12 @@ if __name__ == "__main__":
 
     try:
         with open(filename, 'rb') as f:
-            count_url = Counter()
-            count_status = Counter()
-
+            output_str = []
             url_list = []
             status_list = []
 
             for l in f:
-                # tem uns caracteres especiais no começo do arquivo de log
+                # ignora caracteres especiais no arquivo de log
                 line = l.decode('utf-8', errors="ignore")
 
                 url = re.search('request_to=\"([^\"]*)\"', line)
@@ -29,15 +27,20 @@ if __name__ == "__main__":
                 status = re.search('response_status=\"([^\"]*)\"', line)
                 if status: status_list.append(status.group(1))
 
-            counter = Counter(url_list).most_common(3)
-            for item in sorted(counter, key=by_count_then_lex):
-                print(f"{item[0]} - {item[1]}")
+            counter_url = Counter(url_list).most_common(3)
+            for item in sorted(counter_url, key=by_count_then_lex):
+                output_str.append(f"{item[0]} - {item[1]}")
 
-            print()
+            output_str.append("")
 
-            counter = Counter(status_list).most_common()
-            for item in sorted(counter, key=by_count_then_lex):
-                print(f"{item[0]} - {item[1]}")
+            counter_status = Counter(status_list).most_common()
+            for item in sorted(counter_status, key=by_count_then_lex):
+                output_str.append(f"{item[0]} - {item[1]}")
+
+        if counter_url and counter_status:
+            print("\n".join(output_str))
+        else:
+            print("Malformed log file")
 
     except OSError:
         print("File not found")

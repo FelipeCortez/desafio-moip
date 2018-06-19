@@ -19,5 +19,5 @@ set -o pipefail
 # o primeiro GREP seleciona casamentos para request_to="..."
 # head -n 3 seleciona as três primeiras linhas do resultado
 grep --text -s -o -E 'request_to=\"[^\"]*\"' $1 | order_by_freq | head -n 3 &&
-echo || echo "File not found"
+echo || echo "File error"
 grep --text -s -o -E 'response_status=\"\d+\"' $1 | order_by_freq
