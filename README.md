@@ -29,3 +29,14 @@ $ python3 stats.py log.txt -n 10
 ```sh
 $ python3 stats.py log.txt -a
 ```
+
+## Performance
+```sh
+$ time (./stats.sh log.txt)
+( ./stats.sh log.txt; )  0.71s user 0.05s system 105% cpu 0.720 total
+```
+
+```sh
+$ time (python3 stats.py log.txt)
+$ ( python3 stats.py log.txt; )  0.15s user 0.02s system 97% cpu 0.166 total
+```
