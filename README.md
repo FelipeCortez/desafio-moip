@@ -10,7 +10,22 @@ $ chmod +x stats.sh
 $ ./stats.sh log.txt
 ```
 
-Para stats.py (com Python 3.6)
+Para stats.py (com Python 3.6):
 ```sh
 $ python3 stats.py log.txt
+```
+
+Para testar stats.py:
+```sh
+$ python3 test.py
+```
+
+Também é possível passar os parâmetros "-n N" para escolher a quantidade de URLs exibidas e "-a/--all" para mostrar todas as URLs
+
+```sh
+$ python3 stats.py log.txt -n 10
+```
+
+```sh
+$ python3 stats.py log.txt -a
 ```

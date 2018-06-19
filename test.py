@@ -12,6 +12,11 @@ class TestParse(unittest.TestCase):
         expected_contents = load_file("testes/well-formed.expected")
         self.assertEqual(parse_contents, expected_contents)
 
+    def test_well_formed_4(self):
+        parse_contents = parse_file("testes/well-formed.txt", site_count=4)
+        expected_contents = load_file("testes/well-formed-4.expected")
+        self.assertEqual(parse_contents, expected_contents)
+
     def test_mixed(self):
         parse_contents = parse_file("testes/mixedcase.txt")
         expected_contents = load_file("testes/mixedcase.expected")
