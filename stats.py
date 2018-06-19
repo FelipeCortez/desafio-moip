@@ -55,8 +55,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    try:
-        print(parse_file(args.filename, args.n, args.all))
-    except IndexError:
-        print("Please specify the log file")
-        sys.exit()
+    print(parse_file(args.filename, args.n, args.all))
