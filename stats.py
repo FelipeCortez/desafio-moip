@@ -1,10 +1,14 @@
 import sys
 import re
+import argparse
 from collections import Counter
 
 by_count_then_lex = lambda lex_count: (-lex_count[1], lex_count[0])
 
-def parse_file(filename: str):
+def parse_file(
+        filename: str,
+        site_count: int = 3,
+        all_sites: bool = False):
     try:
         with open(filename, 'rb') as f:
             output_str = []
@@ -21,7 +25,8 @@ def parse_file(filename: str):
                 status = re.search('response_status=\"([^\"]*)\"', line)
                 if status: status_list.append(status.group(1))
 
-            counter_url = Counter(url_list).most_common(3)
+            site_count = site_count if not all_sites else None
+            counter_url = Counter(url_list).most_common(site_count)
             for item in sorted(counter_url, key=by_count_then_lex):
                 output_str.append(f"{item[0]} - {item[1]}")
 
@@ -36,13 +41,22 @@ def parse_file(filename: str):
         else:
             raise ValueError("Malformed log file")
 
-    except OSError:
+    except OSError as e:
         print("File not found")
+        sys.exit()
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='URLs e status codes')
+    parser.add_argument('-n', required=False, type=int,
+                        help='how many URLs should be shown', default=3)
+    parser.add_argument('-a', '--all', action="store_true",
+                        help='show all sites')
+    parser.add_argument('filename', help='log file')
+
+    args = parser.parse_args()
+
     try:
-        filename = sys.argv[1]
-        print(parse_file(sys.argv[1]))
+        print(parse_file(args.filename, args.n, args.all))
     except IndexError:
         print("Please specify the log file")
         sys.exit()
