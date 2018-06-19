@@ -2,6 +2,8 @@ import sys
 import re
 from collections import Counter
 
+by_count_then_lex = lambda lex_count: (-lex_count[1], lex_count[0])
+
 if __name__ == "__main__":
     try:
         filename = sys.argv[1]
@@ -26,10 +28,12 @@ if __name__ == "__main__":
             status = re.search('response_status=\"([^\"]*)\"', line)
             if status: status_list.append(status.group(1))
 
-        for item in Counter(url_list).most_common(3):
+        counter = Counter(url_list).most_common(3)
+        for item in sorted(counter, key=by_count_then_lex):
             print(f"{item[0]} - {item[1]}")
 
         print()
 
-        for item in Counter(status_list).most_common():
+        counter = Counter(status_list).most_common()
+        for item in sorted(counter, key=by_count_then_lex):
             print(f"{item[0]} - {item[1]}")
