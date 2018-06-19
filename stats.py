@@ -4,13 +4,7 @@ from collections import Counter
 
 by_count_then_lex = lambda lex_count: (-lex_count[1], lex_count[0])
 
-if __name__ == "__main__":
-    try:
-        filename = sys.argv[1]
-    except IndexError:
-        print("Please specify the log file")
-        sys.exit()
-
+def parse_file(filename: str):
     try:
         with open(filename, 'rb') as f:
             output_str = []
@@ -33,14 +27,22 @@ if __name__ == "__main__":
 
             output_str.append("")
 
-            counter_status = Counter(status_list).most_common()
-            for item in sorted(counter_status, key=by_count_then_lex):
-                output_str.append(f"{item[0]} - {item[1]}")
+            counter_status = Counter(status_list)
+            for item in sorted(counter_status):
+                output_str.append(f"{item} - {counter_status[item]}")
 
         if counter_url and counter_status:
-            print("\n".join(output_str))
+            return "\n".join(output_str)
         else:
-            print("Malformed log file")
+            raise ValueError("Malformed log file")
 
     except OSError:
         print("File not found")
+
+if __name__ == "__main__":
+    try:
+        filename = sys.argv[1]
+        print(parse_file(sys.argv[1]))
+    except IndexError:
+        print("Please specify the log file")
+        sys.exit()

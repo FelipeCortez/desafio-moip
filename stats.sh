@@ -9,6 +9,10 @@ order_by_freq() {
     cut -d '"' -f2 | tr '[A-Z]' '[a-z]' | sort | uniq -c | sort -k1nr -k2 | awk '{print $2 " - " $1}'
 }
 
+order_by_code() {
+    cut -d '"' -f2 | sort | uniq -c | awk '{print $2 " - " $1}' | sort
+}
+
 if [ $# -eq 0 ]; then
     echo "Please specify the log file"
     exit 1
@@ -20,4 +24,4 @@ set -o pipefail
 # head -n 3 seleciona as três primeiras linhas do resultado
 grep --text -s -o -E 'request_to=\"[^\"]*\"' $1 | order_by_freq | head -n 3 &&
 echo || echo "File error"
-grep --text -s -o -E 'response_status=\"\d+\"' $1 | order_by_freq
+grep --text -s -o -E 'response_status=\"\d+\"' $1 | order_by_code
